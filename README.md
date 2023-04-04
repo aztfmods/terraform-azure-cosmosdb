@@ -1,4 +1,4 @@
-# CosmosDB
+# Cosmos DB
 
 This Terraform module streamlines the creation and administration of Cosmos DB resources on Azure, offering customizable options for database accounts, consistency levels, throughput settings, and more, to ensure a highly scalable, globally distributed, and secure data management platform in the cloud.
 
