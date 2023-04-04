@@ -27,8 +27,10 @@ module "cosmosdb" {
     kind          = "MongoDB"
 
     capabilities = [
-      "EnableMongo", "EnableAggregationPipeline",
-      "mongoEnableDocLevelTTL", "MongoDBv3.4"
+      "EnableMongo",
+      "EnableAggregationPipeline",
+      "mongoEnableDocLevelTTL",
+      "MongoDBv3.4"
     ]
 
     geo_location = {
@@ -37,7 +39,7 @@ module "cosmosdb" {
     }
 
     consistency_policy = {
-      consistency_level = "BoundedStaleness"
+      level = "BoundedStaleness"
     }
   }
   depends_on = [module.global]

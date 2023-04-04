@@ -9,6 +9,7 @@ resource "random_string" "random" {
   numeric   = false
   upper     = false
 }
+
 #----------------------------------------------------------------------------------------
 # cosmosdb account
 #----------------------------------------------------------------------------------------
@@ -39,7 +40,7 @@ resource "azurerm_cosmosdb_account" "db" {
   }
 
   consistency_policy {
-    consistency_level       = var.cosmosdb.consistency_policy.consistency_level
+    consistency_level       = var.cosmosdb.consistency_policy.level
     max_interval_in_seconds = try(var.cosmosdb.consistency_policy.max_interval_in_seconds, 300)
     max_staleness_prefix    = try(var.cosmosdb.consistency_policy.max_staleness_prefix, 100000)
   }
