@@ -25,13 +25,7 @@ module "cosmosdb" {
     location           = module.global.groups.db.location
     resourcegroup      = module.global.groups.db.name
     kind               = "MongoDB"
-    consistency_policy = "BoundedStaleness"
-
-    capabilities = [
-      "EnableMongo", "MongoDBv3.4",
-      "EnableAggregationPipeline",
-      "mongoEnableDocLevelTTL",
-    ]
+    capabilities       = ["EnableMongo"]
 
     geo_location = {
       weu = {
