@@ -67,3 +67,52 @@ resource "azurerm_cosmosdb_mongo_collection" "mongodb_collection" {
     unique = true
   }
 }
+
+# sql databases
+resource "azurerm_cosmosdb_sql_database" "sqldb" {
+  for_each = try(var.cosmosdb.databases.sql, {})
+
+  name                = "cosmos-sql-${each.key}"
+  account_name        = azurerm_cosmosdb_account.db.name
+  resource_group_name = azurerm_cosmosdb_account.db.resource_group_name
+  throughput          = each.value.throughput
+}
+
+# sql containers
+resource "azurerm_cosmosdb_sql_container" "sqlc" {
+  for_each = {
+    for cont in local.sql_containers : "${cont.db_key}.${cont.container_key}" => cont
+  }
+
+  name                  = each.key
+  resource_group_name   = azurerm_cosmosdb_account.db.resource_group_name
+  account_name          = azurerm_cosmosdb_account.db.name
+  database_name         = azurerm_cosmosdb_sql_database.sqldb[each.value.db_key].name
+  partition_key_path    = "/definition/id"
+  partition_key_version = 1
+  throughput            = each.value.throughput
+
+  indexing_policy {
+    indexing_mode = each.value.indexing_mode
+
+    dynamic "included_path" {
+      for_each = try(each.value.included_path, [])
+
+      content {
+        path = included_path.value
+      }
+    }
+
+    dynamic "excluded_path" {
+      for_each = try(each.value.excluded_path, [])
+
+      content {
+        path = excluded_path.value
+      }
+    }
+  }
+
+  unique_key {
+    paths = each.value.unique_key
+  }
+}
