@@ -1,7 +1,4 @@
-#----------------------------------------------------------------------------------------
-# Generate random id
-#----------------------------------------------------------------------------------------
-
+# generate random id
 resource "random_string" "random" {
   length    = 3
   min_lower = 3
@@ -10,10 +7,7 @@ resource "random_string" "random" {
   upper     = false
 }
 
-#----------------------------------------------------------------------------------------
 # cosmosdb account
-#----------------------------------------------------------------------------------------
-
 resource "azurerm_cosmosdb_account" "db" {
   name                      = "cosmos-${var.company}-${var.env}-${var.region}-${random_string.random.result}"
   location                  = var.cosmosdb.location
@@ -43,5 +37,33 @@ resource "azurerm_cosmosdb_account" "db" {
     consistency_level       = var.cosmosdb.consistency_policy.level
     max_interval_in_seconds = try(var.cosmosdb.consistency_policy.max_interval_in_seconds, 300)
     max_staleness_prefix    = try(var.cosmosdb.consistency_policy.max_staleness_prefix, 100000)
+  }
+}
+
+# mongo databases
+resource "azurerm_cosmosdb_mongo_database" "mongodb" {
+  for_each = var.cosmosdb.databases.mongo
+
+  name                = "cosmos-mongo-${each.key}"
+  account_name        = azurerm_cosmosdb_account.db.name
+  resource_group_name = azurerm_cosmosdb_account.db.resource_group_name
+  throughput          = each.value.throughput
+}
+
+# mongo collections
+resource "azurerm_cosmosdb_mongo_collection" "mongodb_collection" {
+  for_each = {
+    for coll in local.mongo_collections : "${coll.db_key}.${coll.collection_key}" => coll
+  }
+
+  name                = each.key
+  throughput          = each.value.throughput
+  account_name        = azurerm_cosmosdb_account.db.name
+  resource_group_name = azurerm_cosmosdb_account.db.resource_group_name
+  database_name       = azurerm_cosmosdb_mongo_database.mongodb[each.value.db_key].name
+
+  index {
+    keys   = ["_id"]
+    unique = true
   }
 }
