@@ -24,8 +24,6 @@ module "cosmosdb" {
   cosmosdb = {
     location      = module.global.groups.db.location
     resourcegroup = module.global.groups.db.name
-    kind          = "MongoDB"
-    capabilities  = ["EnableMongo"]
 
     geo_location = {
       weu = {
