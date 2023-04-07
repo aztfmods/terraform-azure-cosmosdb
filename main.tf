@@ -42,7 +42,7 @@ resource "azurerm_cosmosdb_account" "db" {
 
 # mongo databases
 resource "azurerm_cosmosdb_mongo_database" "mongodb" {
-  for_each = var.cosmosdb.databases.mongo
+  for_each = try(var.cosmosdb.databases.mongo, {})
 
   name                = "cosmos-mongo-${each.key}"
   account_name        = azurerm_cosmosdb_account.db.name
