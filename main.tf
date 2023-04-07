@@ -34,7 +34,7 @@ resource "azurerm_cosmosdb_account" "db" {
   }
 
   consistency_policy {
-    consistency_level       = var.cosmosdb.consistency_policy.level
+    consistency_level       = try(var.cosmosdb.consistency_policy.level, "BoundedStaleness")
     max_interval_in_seconds = try(var.cosmosdb.consistency_policy.max_interval_in_seconds, 300)
     max_staleness_prefix    = try(var.cosmosdb.consistency_policy.max_staleness_prefix, 100000)
   }

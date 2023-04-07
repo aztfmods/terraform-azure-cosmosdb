@@ -55,9 +55,23 @@ module "cosmosdb" {
   region  = module.global.region
 
   cosmosdb = {
-    location      = module.global.groups.db.location
-    resourcegroup = module.global.groups.db.name
-    kind          = "MongoDB"
+    location           = module.global.groups.db.location
+    resourcegroup      = module.global.groups.db.name
+    kind               = "MongoDB"
+    consistency_policy = "BoundedStaleness"
+
+    capabilities = [
+      "EnableMongo", "MongoDBv3.4",
+      "EnableAggregationPipeline",
+      "mongoEnableDocLevelTTL",
+    ]
+
+    geo_location = {
+      weu = {
+        location          = "westeurope"
+        failover_priority = 0
+      }
+    }
 
     databases = {
       mongo = {
@@ -78,20 +92,6 @@ module "cosmosdb" {
           }
         }
       }
-    }
-
-    capabilities = [
-      "EnableMongo", "MongoDBv3.4",
-      "EnableAggregationPipeline",
-      "mongoEnableDocLevelTTL",
-    ]
-
-    geo_location = {
-      weu = { location = "westeurope", failover_priority = 1 }
-    }
-
-    consistency_policy = {
-      level = "BoundedStaleness"
     }
   }
   depends_on = [module.global]

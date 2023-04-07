@@ -22,33 +22,10 @@ module "cosmosdb" {
   region  = module.global.region
 
   cosmosdb = {
-    location      = module.global.groups.db.location
-    resourcegroup = module.global.groups.db.name
-    kind          = "MongoDB"
-
-    databases = {
-      mongo = {
-        db1 = {
-          throughput = 400
-        }
-        db2 = {
-          throughput = 400
-          collections = {
-            col1 = {
-              throughput = 400
-            }
-          }
-        }
-        db3 = {
-          throughput = 400
-          collections = {
-            col1 = {
-              throughput = 400
-            }
-          }
-        }
-      }
-    }
+    location           = module.global.groups.db.location
+    resourcegroup      = module.global.groups.db.name
+    kind               = "MongoDB"
+    consistency_policy = "BoundedStaleness"
 
     capabilities = [
       "EnableMongo", "MongoDBv3.4",
@@ -59,12 +36,29 @@ module "cosmosdb" {
     geo_location = {
       weu = {
         location          = "westeurope"
-        failover_priority = 1
+        failover_priority = 0
       }
     }
 
-    consistency_policy = {
-      level = "BoundedStaleness"
+    databases = {
+      mongo = {
+        db1 = {
+          throughput = 400
+          collections = {
+            col1 = {
+              throughput = 400
+            }
+          }
+        }
+        db2 = {
+          throughput = 400
+          collections = {
+            col1 = {
+              throughput = 400
+            }
+          }
+        }
+      }
     }
   }
   depends_on = [module.global]
