@@ -5,6 +5,7 @@ This Terraform module streamlines the creation and administration of Cosmos DB r
 The below features are made available:
 
 - multiple mongo databases and collections
+- multiple sql databases and containers
 - terratest is used to validate different integrations
 
 The below examples shows the usage when consuming the module:
@@ -92,6 +93,55 @@ module "cosmosdb" {
 }
 ```
 
+## Usage: sqldb
+
+```hcl
+module "cosmosdb" {
+  source = "../../"
+
+  company = module.global.company
+  env     = module.global.env
+  region  = module.global.region
+
+  cosmosdb = {
+    location      = module.global.groups.db.location
+    resourcegroup = module.global.groups.db.name
+    kind          = "MongoDB"
+    capabilities  = ["EnableMongo"]
+
+    geo_location = {
+      weu = {
+        location          = "westeurope"
+        failover_priority = 0
+      }
+    }
+
+    databases = {
+      sql = {
+        db1 = {
+          throughput = 400
+          containers = {
+            ct1 = {
+              throughput       = 400
+              unique_key_paths = ["/definition/idlong"]
+              index_policy = {
+                indexing_mode  = "consistent"
+                included_paths = ["/*", "/blah"]
+                excluded_paths = ["/excluded/?", "/another_excluded"]
+              }
+            }
+          }
+        }
+        db2 = {
+          throughput = 400
+        }
+      }
+    }
+  }
+  depends_on = [module.global]
+}
+```
+
 ## Resources
 
 | Name | Type |
@@ -100,6 +150,8 @@ module "cosmosdb" {
 | [random_string](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [azurerm_cosmosdb_mongo_database](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
 | [azurerm_cosmosdb_mongo_collection](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_collection) | resource |
+| [azurerm_cosmosdb_sql_database](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_database)) | resource |
+| [azurerm_cosmosdb_sql_container](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_sql_container) | resource |
 
 ## Inputs
 
