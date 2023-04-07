@@ -4,6 +4,7 @@ This Terraform module streamlines the creation and administration of Cosmos DB r
 
 The below features are made available:
 
+- multiple mongo databases and collections
 - terratest is used to validate different integrations
 
 The below examples shows the usage when consuming the module:
@@ -43,12 +44,68 @@ module "cosmosdb" {
 }
 ```
 
+## Usage: mongodb
+
+```hcl
+module "cosmosdb" {
+  source = "../../"
+
+  company = module.global.company
+  env     = module.global.env
+  region  = module.global.region
+
+  cosmosdb = {
+    location      = module.global.groups.db.location
+    resourcegroup = module.global.groups.db.name
+    kind          = "MongoDB"
+
+    databases = {
+      mongo = {
+        db1 = {
+          throughput = 400
+          collections = {
+            col1 = {
+              throughput = 400
+            }
+          }
+        }
+        db2 = {
+          throughput = 400
+          collections = {
+            col1 = {
+              throughput = 400
+            }
+          }
+        }
+      }
+    }
+
+    capabilities = [
+      "EnableMongo", "MongoDBv3.4",
+      "EnableAggregationPipeline",
+      "mongoEnableDocLevelTTL",
+    ]
+
+    geo_location = {
+      weu = { location = "westeurope", failover_priority = 1 }
+    }
+
+    consistency_policy = {
+      level = "BoundedStaleness"
+    }
+  }
+  depends_on = [module.global]
+}
+```
+
 ## Resources
 
 | Name | Type |
 | :-- | :-- |
 | [azurerm_cosmosdb_account](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_account) | resource |
 | [random_string](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
+| [azurerm_cosmosdb_mongo_database](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_database) | resource |
+| [azurerm_cosmosdb_mongo_collection](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/cosmosdb_mongo_collection) | resource |
 
 ## Inputs
 
