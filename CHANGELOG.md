@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.0](https://github.com/aztfmods/module-azurerm-cosmosdb/compare/v1.1.0...v1.2.0) (2023-04-07)
+
+
+### Features
+
+* add support for sql databases and containers ([#27](https://github.com/aztfmods/module-azurerm-cosmosdb/issues/27)) ([0f9f94c](https://github.com/aztfmods/module-azurerm-cosmosdb/commit/0f9f94cc7dffc9a0241141af6a095d232d406389))
+* update documentation ([#29](https://github.com/aztfmods/module-azurerm-cosmosdb/issues/29)) ([e2aac6d](https://github.com/aztfmods/module-azurerm-cosmosdb/commit/e2aac6df166695a2c682ddc4cbefdbcfd2dc842f))
+
 ## [1.1.0](https://github.com/aztfmods/module-azurerm-cosmosdb/compare/v1.0.0...v1.1.0) (2023-04-07)
 
 
