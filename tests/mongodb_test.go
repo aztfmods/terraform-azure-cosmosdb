@@ -26,6 +26,7 @@ func TestApplyNoError(t *testing.T) {
 	tests := map[string]string{
 		"simple":  "../examples/simple",
 		"mongodb": "../examples/mongodb",
+		"sqldb":   "../examples/sqldb",
 	}
 
 	for name, path := range tests {
