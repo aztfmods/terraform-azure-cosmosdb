@@ -42,7 +42,7 @@ module "cosmosdb" {
               unique_key_paths = ["/definition/idlong"]
               index_policy = {
                 indexing_mode  = "consistent"
-                included_paths = ["/*", "/blah"]
+                included_paths = ["/*"]
                 excluded_paths = ["/excluded/?", "/another_excluded"]
               }
             }
