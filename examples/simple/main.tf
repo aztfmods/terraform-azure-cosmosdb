@@ -25,20 +25,10 @@ module "cosmosdb" {
     location      = module.global.groups.db.location
     resourcegroup = module.global.groups.db.name
     kind          = "MongoDB"
-
-    capabilities = [
-      "EnableMongo", "MongoDBv3.4",
-      "EnableAggregationPipeline",
-      "mongoEnableDocLevelTTL",
-    ]
+    capabilities  = ["EnableAggregationPipeline"]
 
     geo_location = {
-      weu = { location = "westeurope", failover_priority = 1 }
-      eus = { location = "eastus", failover_priority = 0 }
-    }
-
-    consistency_policy = {
-      level = "BoundedStaleness"
+      weu = { location = "westeurope", failover_priority = 0 }
     }
   }
   depends_on = [module.global]
