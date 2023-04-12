@@ -34,6 +34,12 @@ module "cosmosdb" {
       }
     }
 
+    tables = {
+      table1 = {
+        throughput = 400
+      }
+    }
+
     databases = {
       mongo = {
         db1 = {
@@ -57,3 +63,4 @@ module "cosmosdb" {
   }
   depends_on = [module.global]
 }
+
