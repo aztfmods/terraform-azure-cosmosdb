@@ -68,6 +68,25 @@ resource "azurerm_cosmosdb_mongo_collection" "mongodb_collection" {
   }
 }
 
+# cosmosdb tables
+resource "azurerm_cosmosdb_table" "tables" {
+  for_each = try(var.cosmosdb.tables, {})
+
+  name                = "cosmos-table-${each.key}"
+  account_name        = azurerm_cosmosdb_account.db.name
+  resource_group_name = azurerm_cosmosdb_account.db.resource_group_name
+  throughput          = each.value.throughput
+
+  autoscale_settings {
+    max_throughput = try(each.value.autoscale_settings.max_throughput, 4000)
+  }
+
+  connection {
+    endpoint = azurerm_cosmosdb_account.db.endpoint
+    key      = azurerm_cosmosdb_account.db.primary_master_key
+  }
+}
+
 # sql databases
 resource "azurerm_cosmosdb_sql_database" "sqldb" {
   for_each = try(var.cosmosdb.databases.sql, {})
