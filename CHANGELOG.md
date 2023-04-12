@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/aztfmods/module-azurerm-cosmosdb/compare/v1.2.0...v1.3.0) (2023-04-12)
+
+
+### Features
+
+* add missing properties ([#33](https://github.com/aztfmods/module-azurerm-cosmosdb/issues/33)) ([89e8090](https://github.com/aztfmods/module-azurerm-cosmosdb/commit/89e809052d87f1226b967b0c82cd88d9f1ccee12))
+* add support for cosmosdb tables ([#31](https://github.com/aztfmods/module-azurerm-cosmosdb/issues/31)) ([2f2fdeb](https://github.com/aztfmods/module-azurerm-cosmosdb/commit/2f2fdeb4ba291252c902fb2c7041c0e922292767))
+
 ## [1.2.0](https://github.com/aztfmods/module-azurerm-cosmosdb/compare/v1.1.0...v1.2.0) (2023-04-07)
 
 
