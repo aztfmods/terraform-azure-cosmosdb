@@ -34,7 +34,6 @@ func TestApplyNoError(t *testing.T) {
 			terraformOptions := &terraform.Options{
 				TerraformDir: path,
 				NoColor:      true,
-				Parallelism:  2,
 			}
 
 			terraform.WithDefaultRetryableErrors(t, &terraform.Options{})

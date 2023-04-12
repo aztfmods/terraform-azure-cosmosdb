@@ -14,7 +14,18 @@ resource "azurerm_cosmosdb_account" "db" {
   resource_group_name       = var.cosmosdb.resourcegroup
   offer_type                = try(var.cosmosdb.offer_type, "Standard")
   kind                      = try(var.cosmosdb.kind, "GlobalDocumentDB")
-  enable_automatic_failover = true
+  enable_automatic_failover = try(var.cosmosdb.enable.automatic_failover, false)
+  enable_free_tier          = try(var.cosmosdb.enable.free_tier, false)
+  network_acl_bypass_ids    = try(var.cosmosdb.network_acl_bypass_ids, [])
+  mongo_server_version      = try(var.cosmosdb.mongo_server_version, "3.6")
+
+  access_key_metadata_writes_enabled    = try(var.cosmosdb.enable.access_key_metadata_writes, false)
+  enable_multiple_write_locations       = try(var.cosmosdb.enable.multiple_write_locations, false)
+  local_authentication_disabled         = try(var.cosmosdb.enable.local_authentication_disabled, false)
+  network_acl_bypass_for_azure_services = try(var.cosmosdb.enable.network_acl_bypass_for_azure_services, false)
+  is_virtual_network_filter_enabled     = try(var.cosmosdb.enable_virtual_network_filter, false)
+  public_network_access_enabled         = try(var.cosmosdb.enable.public_network_access, true)
+  analytical_storage_enabled            = try(var.cosmosdb.enable.analytical_storage, false)
 
   dynamic "capabilities" {
     for_each = try(var.cosmosdb.capabilities, [])
@@ -62,6 +73,14 @@ resource "azurerm_cosmosdb_mongo_collection" "mongodb_collection" {
   resource_group_name = azurerm_cosmosdb_account.db.resource_group_name
   database_name       = azurerm_cosmosdb_mongo_database.mongodb[each.value.db_key].name
 
+  default_ttl_seconds    = try(each.value.default_ttl_seconds, -1)
+  analytical_storage_ttl = try(each.value.analytical_storage_ttl, -1)
+  shard_key              = try(each.value.shard_key, "")
+
+  autoscale_settings {
+    max_throughput = try(each.value.autoscale_settings.max_throughput, 4000)
+  }
+
   index {
     keys   = ["_id"]
     unique = true
@@ -95,6 +114,10 @@ resource "azurerm_cosmosdb_sql_database" "sqldb" {
   account_name        = azurerm_cosmosdb_account.db.name
   resource_group_name = azurerm_cosmosdb_account.db.resource_group_name
   throughput          = each.value.throughput
+
+  autoscale_settings {
+    max_throughput = try(each.value.autoscale_settings.max_throughput, 4000)
+  }
 }
 
 # sql containers
@@ -103,13 +126,15 @@ resource "azurerm_cosmosdb_sql_container" "sqlc" {
     for cont in local.sql_containers : "${cont.db_key}.${cont.container_key}" => cont
   }
 
-  name                  = each.key
-  resource_group_name   = azurerm_cosmosdb_account.db.resource_group_name
-  account_name          = azurerm_cosmosdb_account.db.name
-  database_name         = azurerm_cosmosdb_sql_database.sqldb[each.value.db_key].name
-  partition_key_path    = "/definition/id"
-  partition_key_version = 1
-  throughput            = each.value.throughput
+  name                   = each.key
+  resource_group_name    = azurerm_cosmosdb_account.db.resource_group_name
+  account_name           = azurerm_cosmosdb_account.db.name
+  database_name          = azurerm_cosmosdb_sql_database.sqldb[each.value.db_key].name
+  partition_key_path     = "/definition/id"
+  partition_key_version  = 1
+  throughput             = each.value.throughput
+  analytical_storage_ttl = try(each.value.analytical_storage_ttl, -1)
+  default_ttl            = try(each.value.default_ttl, -1)
 
   indexing_policy {
     indexing_mode = each.value.indexing_mode
