@@ -2,28 +2,27 @@ provider "azurerm" {
   features {}
 }
 
-module "global" {
-  source = "github.com/aztfmods/module-azurerm-global"
+module "rg" {
+  source = "github.com/aztfmods/terraform-azure-rg"
 
-  company = "cn"
-  env     = "p"
-  region  = "weu"
+  environment = var.environment
 
-  rgs = {
-    db = { location = "westeurope" }
+  groups = {
+    demo = {
+      region = "westeurope"
+    }
   }
 }
 
 module "cosmosdb" {
   source = "../../"
 
-  company = module.global.company
-  env     = module.global.env
-  region  = module.global.region
+  workload    = var.workload
+  environment = var.environment
 
   cosmosdb = {
-    location      = module.global.groups.db.location
-    resourcegroup = module.global.groups.db.name
+    location      = module.rg.groups.demo.location
+    resourcegroup = module.rg.groups.demo.name
 
     geo_location = {
       weu = {
@@ -54,5 +53,5 @@ module "cosmosdb" {
       }
     }
   }
-  depends_on = [module.global]
+  depends_on = [module.rg]
 }
