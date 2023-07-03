@@ -9,7 +9,7 @@ resource "random_string" "random" {
 
 # cosmosdb account
 resource "azurerm_cosmosdb_account" "db" {
-  name                      = "cosmos-${var.company}-${var.env}-${var.region}-${random_string.random.result}"
+  name                      = "cosmos-${var.workload}-${var.environment}-${random_string.random.result}"
   location                  = var.cosmosdb.location
   resource_group_name       = var.cosmosdb.resourcegroup
   offer_type                = try(var.cosmosdb.offer_type, "Standard")

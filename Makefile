@@ -1,10 +1,12 @@
-.PHONY: simple mongodb
+.PHONY: test
 
-simple:
-	cd tests && go test -v -timeout 60m -run TestApplyNoError/simple
+export WORKLOAD
+export ENVIRONMENT
+export USECASE
 
-mongodb:
-	cd tests && go test -v -timeout 60m -run TestApplyNoError/mongodb
+#test_extended:
 
-sqldb:
-	cd tests && go test -v -timeout 60m -run TestApplyNoError/sqldb
+test:
+	cd tests && go test -v -timeout 60m -run TestApplyNoError/$(USECASE) ./mongodb_test.go
+
+#test_local:

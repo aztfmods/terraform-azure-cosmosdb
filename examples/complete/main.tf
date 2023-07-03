@@ -5,7 +5,7 @@ provider "azurerm" {
 module "rg" {
   source = "github.com/aztfmods/terraform-azure-rg"
 
-  env = var.environment
+  environment = var.environment
 
   groups = {
     demo = {
@@ -18,7 +18,7 @@ module "cosmosdb" {
   source = "../../"
 
   workload    = var.workload
-  environment = module.global.env
+  environment = var.environment
 
   cosmosdb = {
     location      = module.rg.groups.demo.location
