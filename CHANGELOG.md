@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/aztfmods/terraform-azure-cosmosdb/compare/v1.3.0...v1.4.0) (2023-07-05)
+
+
+### Features
+
+* solve linting issues and update documention ([#43](https://github.com/aztfmods/terraform-azure-cosmosdb/issues/43)) ([24aa02d](https://github.com/aztfmods/terraform-azure-cosmosdb/commit/24aa02d79b71c6cb6ccebd52cd7b5754e06a84ac))
+
 ## [1.3.0](https://github.com/aztfmods/module-azurerm-cosmosdb/compare/v1.2.0...v1.3.0) (2023-04-12)
 
 
