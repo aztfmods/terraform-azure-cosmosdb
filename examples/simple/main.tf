@@ -31,4 +31,3 @@ module "cosmosdb" {
   }
   depends_on = [module.rg]
 }
-
