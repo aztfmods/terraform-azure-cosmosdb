@@ -23,6 +23,7 @@ module "cosmosdb" {
   cosmosdb = {
     location      = module.rg.groups.demo.location
     resourcegroup = module.rg.groups.demo.name
+    kind          = "GlobalDocumentDB"
 
     geo_location = {
       weu = {
@@ -42,7 +43,6 @@ module "cosmosdb" {
               index_policy = {
                 indexing_mode  = "consistent"
                 included_paths = ["/*"]
-                excluded_paths = ["/excluded/?", "/another_excluded"]
               }
             }
           }
