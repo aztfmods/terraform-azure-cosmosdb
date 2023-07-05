@@ -14,7 +14,7 @@ module "rg" {
 }
 
 module "cosmosdb" {
-  source = "github.com/aztfmods/terraform-azure-cosmosdb?ref=v1.3.0"
+  source = "github.com/aztfmods/terraform-azure-cosmosdb?ref=v1.4.0"
 
   workload    = var.workload
   environment = var.environment
