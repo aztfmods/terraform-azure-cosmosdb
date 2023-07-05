@@ -1,3 +1,11 @@
-variable "cosmosdb" {}
-variable "workload" {}
-variable "environment" {}
+variable "cosmosdb" {
+  type = any
+}
+
+variable "workload" {
+  type = string
+}
+
+variable "environment" {
+  type = string
+}
