@@ -39,7 +39,6 @@ module "cosmosdb" {
       weu = { location = "westeurope", failover_priority = 0 }
     }
   }
-  depends_on = [module.rg]
 }
 ```
 
@@ -86,7 +85,6 @@ module "cosmosdb" {
       }
     }
   }
-  depends_on = [module.rg]
 }
 ```
 
@@ -132,7 +130,6 @@ module "cosmosdb" {
       }
     }
   }
-  depends_on = [module.rg]
 }
 ```
 
@@ -182,3 +179,4 @@ MIT Licensed. See [LICENSE](https://github.com/aztfmods/terraform-azure-cosmosdb
 
 - [Cosmos DB Documentation - Microsoft docs](https://learn.microsoft.com/en-us/azure/cosmos-db/)
 - [Cosmos DB Rest Api - Microsoft docs](https://learn.microsoft.com/en-us/rest/api/cosmos-db/)
+- [Rest Api Specs](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db)

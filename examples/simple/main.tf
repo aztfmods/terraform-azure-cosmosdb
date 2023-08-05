@@ -29,5 +29,4 @@ module "cosmosdb" {
       weu = { location = "westeurope", failover_priority = 0 }
     }
   }
-  depends_on = [module.rg]
 }
