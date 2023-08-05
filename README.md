@@ -177,6 +177,6 @@ MIT Licensed. See [LICENSE](https://github.com/aztfmods/terraform-azure-cosmosdb
 
 ## Reference
 
-- [Cosmos DB Documentation - Microsoft docs](https://learn.microsoft.com/en-us/azure/cosmos-db/)
-- [Cosmos DB Rest Api - Microsoft docs](https://learn.microsoft.com/en-us/rest/api/cosmos-db/)
+- [Documentation](https://learn.microsoft.com/en-us/azure/cosmos-db/)
+- [Rest Api](https://learn.microsoft.com/en-us/rest/api/cosmos-db/)
 - [Rest Api Specs](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/cosmos-db)
